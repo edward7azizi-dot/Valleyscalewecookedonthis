@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valleyscale — AI Automation for Modern Businesses</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtxheqf6t/image/upload/v1777246325/ChatGPT_Image_Apr_26_2026_06_09_06_PM_sxndzg.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #010101;
+      --blue-1: #38BDF8;
+      --blue-2: #2563EB;
+      --blue-3: #4F46E5;
+      --gradient: linear-gradient(135deg, #38BDF8 0%, #2563EB 50%, #4F46E5 100%);
+      --gradient-text: linear-gradient(135deg, #ffffff 0%, #38BDF8 55%, #4F46E5 100%);
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-bg-md: rgba(255,255,255,0.07);
+      --glass-border: rgba(255,255,255,0.08);
+      --glass-border-hover: rgba(56,189,248,0.35);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.72);
+      --text-muted: rgba(255,255,255,0.42);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
+
+    /* Gradient text */
+    .gradient-text {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-blue {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glass card */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .glass-md {
+      background: var(--glass-bg-md);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-hover {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .glass-hover:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 0 24px rgba(56,189,248,0.1), 0 0 60px rgba(37,99,235,0.06);
+      background: rgba(255,255,255,0.065);
+    }
+
+    /* Gradient button */
+    .btn-gradient {
+      background: var(--gradient);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .btn-gradient:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Scroll animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .fade-in {
+      opacity: 0;
+      transition: opacity 0.65s ease;
+    }
+    .fade-in.visible { opacity: 1; }
+
+    /* Hero entrance animations */
+    @keyframes heroSlideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-anim-1 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+    .hero-anim-2 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+    .hero-anim-3 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.5s both; }
+    .hero-anim-4 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.7s both; }
+    .hero-anim-5 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.85s both; }
+
+    /* Infinite slider */
+    @keyframes sliderScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .slider-track {
+      display: flex;
+      width: max-content;
+      animation: sliderScroll 28s linear infinite;
+    }
+    .slider-track:hover { animation-play-state: paused; }
+
+    /* Accordion */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .accordion-content.open {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* Service card expand */
+    .service-bullets {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+    .service-card:hover .service-bullets,
+    .service-card.active .service-bullets {
+      max-height: 240px;
+      opacity: 1;
+    }
+
+    /* Connector line */
+    .connector {
+      position: absolute;
+      top: 50%;
+      right: -1px;
+      width: calc(100% + 2px);
+      height: 1px;
+      background: linear-gradient(90deg, rgba(56,189,248,0.4), rgba(79,70,229,0.4));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.8s ease 0.3s;
+    }
+    .connector.visible { transform: scaleX(1); }
+
+    /* Glow orb */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    /* Section styles */
+    section { position: relative; }
+
+    /* Nav */
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-family: var(--font-body);
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+
+    /* Pill badge */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px 6px 8px;
+      border-radius: 100px;
+      background: rgba(28,27,36,0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Stats */
+    .stat-divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Team avatar placeholder */
+    .avatar-placeholder {
+      background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(79,70,229,0.2));
+      border: 1px solid rgba(56,189,248,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: rgba(56,189,248,0.6);
+    }
+
+    /* Calendar mock */
+    .cal-day {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      font-family: var(--font-body);
+    }
+    .cal-day:hover { background: rgba(56,189,248,0.15); }
+    .cal-day.selected { background: var(--gradient); color: white; font-weight: 600; }
+    .cal-day.today { border: 1px solid rgba(56,189,248,0.4); }
+    .cal-day.disabled { opacity: 0.25; cursor: default; }
+
+    /* Responsive helpers */
+    @media (max-width: 768px) {
+      .hide-mobile { display: none !important; }
+    }
+    @media (min-width: 769px) {
+      .hide-desktop { display: none !important; }
+    }
+
+    /* Hero CTA slide effect */
+    .hero-cta-wrap { overflow: hidden; position: relative; }
+    .hero-cta-wrap::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: 100px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .hero-cta-wrap:hover::before { transform: translateX(100%); transition: transform 0.55s ease; }
+    .hero-cta-wrap:hover { box-shadow: 0 0 28px rgba(56,189,248,0.2); transition: box-shadow 0.3s ease; }
+    .hero-cta-text { display: inline-block; transition: transform 0.25s ease; }
+    .hero-cta-wrap:hover .hero-cta-text { transform: translateX(-4px); }
+
+    /* Flip card */
+    .flip-card { perspective: 1200px; cursor: pointer; }
+    .flip-card-inner {
+      position: relative;
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .flip-card-back { transform: rotateY(180deg); }
+    @media (max-width: 768px) {
+      .faq-flip-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* Hero mobile overlay */
+    @media (min-width: 769px) {
+      .hero-mobile-overlay { display: none !important; }
+    }
+
+    /* ── Mobile overrides ── */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    @media (max-width: 768px) {
+      .hero-mobile-overlay { background: rgba(1,1,1,0.58) !important; display: block !important; }
+
+      /* Video: full width on mobile */
+      .hero-video { width: 100% !important; }
+
+      /* Hero text: center on mobile */
+      .hero-content { justify-content: center !important; text-align: left; }
+      .hero-text-col { max-width: 100% !important; }
+
+      /* Prevent any section from overflowing */
+      section, footer, nav > div {
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
+      /* Hero: stack layout, smaller text */
+      .hero-text-col {
+        flex: 0 0 100% !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+      }
+
+      /* Logo slider: contain overflow */
+      .slider-track {
+        max-width: none;
+      }
+
+      /* Nav: hide Book a Call button on mobile (hamburger handles it) */
+      .nav-cta-desktop {
+        display: none !important;
+      }
+
+      /* Stat row: smaller gap */
+      .hero-stat-row {
+        gap: 14px !important;
+        flex-wrap: wrap;
+      }
+
+      /* Section padding reduction */
+      section {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+
+      /* Booking grid: single column */
+      .booking-grid {
+        grid-template-columns: 1fr !important;
+        gap: 36px !important;
+      }
+
+      /* Why fail 3-col inner: stack */
+      .whyfail-inner {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Footer: stack */
+      .footer-inner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 20px !important;
+      }
+    }
+  </style>
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// Shared hooks — exported to window
+
+function useScrollAnimation(threshold = 0.15) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('visible');
+          obs.disconnect();
+        }
+      },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return ref;
+}
+
+function useStaggerAnimation(count, threshold = 0.12) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const children = container.querySelectorAll('[data-stagger]');
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          children.forEach((child, i) => {
+            setTimeout(() => child.classList.add('visible'), i * 110);
+          });
+          obs.disconnect();
+        }
+      },
+      { threshold }
+    );
+    obs.observe(container);
+    return () => obs.disconnect();
+  }, [count]);
+  return containerRef;
+}
+
+Object.assign(window, { useScrollAnimation, useStaggerAnimation });
+
+// SVG Icon components — exported to window
+
+const ZapIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+  </svg>
+);
+
+const ArrowRightIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const ChevronDownIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
+const ChevronRightIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
+const LinkedInIcon = ({ size = 18, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+    <rect x="2" y="9" width="4" height="12"/>
+    <circle cx="4" cy="4" r="2"/>
+  </svg>
+);
+
+const MailIcon = ({ size = 18, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+);
+
+const CheckIcon = ({ size = 15, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+);
+
+const PlusIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+);
+
+const StarIcon = ({ size = 14, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+);
+
+const CalendarIcon = ({ size = 18, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
+
+const ClockIcon = ({ size = 15, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+
+const MenuIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+);
+
+const XIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
+Object.assign(window, {
+  ZapIcon, ArrowRightIcon, ChevronDownIcon, ChevronRightIcon,
+  LinkedInIcon, MailIcon, CheckIcon, PlusIcon, StarIcon,
+  CalendarIcon, ClockIcon, MenuIcon, XIcon
+});
+
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  const links = [
+  { label: 'Process', href: '#process' },
+  { label: 'Services', href: '#services' },
+  { label: 'Why Us', href: '#why' },
+  { label: 'FAQ', href: '#faq' },
+  { label: 'Contact', href: 'Contact.html' }];
+
+
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      padding: '0 32px',
+      transition: 'background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
+      background: scrolled ? 'rgba(1,1,1,0.82)' : 'transparent',
+      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
+      backdropFilter: (scrolled && !mobileOpen) ? 'blur(18px)' : 'none',
+      WebkitBackdropFilter: (scrolled && !mobileOpen) ? 'blur(18px)' : 'none'
+    }}>
+      <div style={{
+        maxWidth: 1180, margin: '0 auto', height: 68,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+      }}>
+        {/* Logo */}
+        <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img
+            src="https://res.cloudinary.com/dtxheqf6t/image/upload/v1777246325/ChatGPT_Image_Apr_26_2026_06_09_06_PM_sxndzg.png"
+            alt="Valleyscale logo"
+            style={{ objectFit: 'contain', padding: "0px", borderWidth: "0px", borderStyle: "solid", borderRadius: "0px", margin: "-18.1328px", width: "90px", height: "90px" }} />
+          
+          <span style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            letterSpacing: '-0.02em', color: '#fff', fontSize: "22px"
+          }}>Valleyscale</span>
+        </a>
+
+        {/* Desktop links */}
+        <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+          {links.map((l) =>
+          <a key={l.href} href={l.href} className="nav-link">{l.label}</a>
+          )}
+        </div>
+
+        {/* CTA */}
+        <div className="hide-mobile nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <a href="#booking" style={{
+            textDecoration: 'none', padding: '9px 20px', borderRadius: 100,
+            background: 'linear-gradient(135deg,#38BDF8,#2563EB,#4F46E5)',
+            color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'var(--font-body)',
+            whiteSpace: 'nowrap',
+            transition: 'opacity 0.2s ease, transform 0.2s ease',
+            display: 'inline-block'
+          }}
+          onMouseEnter={(e) => {e.target.style.opacity = '0.85';e.target.style.transform = 'translateY(-1px)';}}
+          onMouseLeave={(e) => {e.target.style.opacity = '1';e.target.style.transform = 'translateY(0)';}}>
+            Book a Free Consultation</a>
+        </div>
+
+        {/* Mobile menu toggle */}
+        <button className="hide-desktop" onClick={() => setMobileOpen((o) => !o)}
+        style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: 4 }}>
+          {mobileOpen ? <XIcon /> : <MenuIcon />}
+        </button>
+      </div>
+
+      {/* Mobile menu — full screen overlay */}
+      {mobileOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(1,1,1,0.97)',
+          backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+          zIndex: 99, display: 'flex', flexDirection: 'column',
+          padding: '0 28px 40px',
+        }}>
+          {/* Top row: logo + close */}
+          <div style={{
+            height: 68, display: 'flex', alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            marginBottom: 12,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <img src="https://res.cloudinary.com/dtxheqf6t/image/upload/v1777246325/ChatGPT_Image_Apr_26_2026_06_09_06_PM_sxndzg.png"
+                alt="" style={{ width: 36, height: 36, objectFit: 'contain' }} />
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 17, color: '#fff' }}>Valleyscale</span>
+            </div>
+            <button onClick={() => setMobileOpen(false)}
+              style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: 6 }}>
+              <XIcon size={24} />
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4 }}>
+            {links.map((l, i) => (
+              <a key={l.href} href={l.href}
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '18px 0', textDecoration: 'none',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  color: '#fff', fontFamily: 'var(--font-display)',
+                  fontWeight: 600, fontSize: 22, letterSpacing: '-0.02em',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#38BDF8'}
+                onMouseLeave={e => e.currentTarget.style.color = '#fff'}
+              >
+                {l.label}
+                <ChevronRightIcon size={18} style={{ color: 'rgba(255,255,255,0.25)' }} />
+              </a>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <a href="#booking" onClick={() => setMobileOpen(false)} style={{
+            display: 'block', textAlign: 'center',
+            padding: '16px', borderRadius: 14,
+            background: 'linear-gradient(135deg,#38BDF8,#2563EB,#4F46E5)',
+            color: '#fff', fontSize: 16, fontWeight: 700,
+            textDecoration: 'none', fontFamily: 'var(--font-display)',
+            letterSpacing: '-0.01em',
+            boxShadow: '0 4px 24px rgba(56,189,248,0.25)',
+          }}>Book a Free Discovery Call →</a>
+
+          {/* Bottom meta */}
+          <p style={{
+            textAlign: 'center', fontSize: 12,
+            color: 'rgba(255,255,255,0.25)', marginTop: 16,
+            fontFamily: 'var(--font-body)',
+          }}>valleyscale.ca · edward@valleyscale.ca</p>
+        </div>
+      )}
+    </nav>);
+
+}
+
+Object.assign(window, { Nav });
+function Hero() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.play().catch(() => {});
+  }, []);
+
+  return (
+    <section style={{
+      minHeight: '100vh', position: 'relative', overflow: 'hidden',
+      display: 'flex', flexDirection: 'column',
+    }}>
+      {/* ── Video: full-bleed background, right half on desktop, full on mobile ── */}
+      <video
+        ref={videoRef}
+        src="https://res.cloudinary.com/dtxheqf6t/video/upload/v1777245643/1777239303921-ptocpymolgs_afdywg.mp4"
+        autoPlay loop muted playsInline
+        className="hero-video"
+        style={{
+          position: 'absolute',
+          top: 0, right: 0,
+          width: 'clamp(100%, 62%, 62%)',
+          height: '100%',
+          objectFit: 'cover',
+          mixBlendMode: 'screen',
+          zIndex: 1,
+        }}
+      />
+
+      {/* ── Dark overlay for mobile readability ── */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
+        background: 'rgba(1,1,1,0.55)',
+      }} className="hero-mobile-overlay" />
+
+      {/* ── Gradient veil — desktop fade ── */}
+      {/* Left fade: strong, covers the join between text and video */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
+        background: [
+          /* left — widest, most important */
+          'linear-gradient(90deg, #010101 0%, #010101 30%, rgba(1,1,1,0.7) 50%, transparent 72%)',
+          /* right edge */
+          'linear-gradient(270deg, #010101 0%, transparent 20%)',
+          /* top */
+          'linear-gradient(180deg, #010101 0%, transparent 25%)',
+          /* bottom */
+          'linear-gradient(0deg, #010101 0%, transparent 30%)',
+        ].join(', '),
+      }} />
+
+      {/* ── Background glow orbs (behind everything) ── */}
+      <div className="glow-orb" style={{
+        width: 600, height: 600, top: -100, left: -100, zIndex: 0,
+        background: 'radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)',
+      }} />
+      <div className="glow-orb" style={{
+        width: 400, height: 400, bottom: 0, right: '30%', zIndex: 0,
+        background: 'radial-gradient(circle, rgba(79,70,229,0.12) 0%, transparent 70%)',
+      }} />
+
+      {/* ── Text content ── */}
+      <div style={{
+        flex: 1, display: 'flex', alignItems: 'center',
+        width: '100%',
+        padding: 'clamp(100px, 14vw, 120px) 20px 60px clamp(40px, 5vw, 96px)',
+        position: 'relative', zIndex: 20,
+      }}>
+        <div style={{ maxWidth: 560 }}>
+          {/* Pill badge */}
+          <div className="hero-anim-1 pill" style={{ marginBottom: 28, width: 'fit-content' }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 6,
+              background: 'linear-gradient(135deg,#38BDF8,#4F46E5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 12px rgba(56,189,248,0.5)',
+            }}>
+              <img src="https://res.cloudinary.com/dtxheqf6t/image/upload/v1777246325/ChatGPT_Image_Apr_26_2026_06_09_06_PM_sxndzg.png" alt="" style={{ width: 36, height: 36, objectFit: 'contain' }} />
+            </div>
+            <span style={{ color: 'rgba(255,255,255,0.82)', fontSize: 13 }}>
+              Evaluation-first. Results guaranteed.
+            </span>
+          </div>
+
+          {/* H1 */}
+          <h1 className="hero-anim-2" style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(44px, 6vw, 82px)', lineHeight: 1.06,
+            letterSpacing: '-0.03em', marginBottom: 24,
+          }}>
+            <span className="gradient-text">Automate Your</span>
+            <br />
+            <span className="gradient-text">Business. Scale Fast.</span>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="hero-anim-3" style={{
+            fontSize: 'clamp(16px, 1.4vw, 18px)',
+            color: 'rgba(255,255,255,0.72)', lineHeight: 1.75,
+            maxWidth: 480, marginBottom: 36, fontFamily: 'var(--font-body)',
+          }}>
+            Every business has friction worth fixing. We map your operations,
+            identify the highest-leverage automation opportunities, and build
+            exactly what you need — then stay with you as you grow.
+          </p>
+
+          {/* CTA */}
+          <div className="hero-anim-4" style={{ marginBottom: 36 }}>
+            <a href="#booking" style={{ textDecoration: 'none', display: 'inline-flex', color: 'inherit' }}>
+              <div className="hero-cta-wrap" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 12,
+                padding: '3px', borderRadius: 100,
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.12)',
+              }}>
+                <span className="hero-cta-text" style={{
+                  background: '#fff', color: '#010101', borderRadius: 100,
+                  padding: '12px 24px', fontSize: 15, fontWeight: 700,
+                  fontFamily: 'var(--font-body)', letterSpacing: '-0.01em',
+                  whiteSpace: 'nowrap',
+                }}>Book a Free Discovery Call</span>
+                <div style={{
+                  width: 42, height: 42, borderRadius: 100,
+                  background: 'linear-gradient(135deg,#38BDF8,#2563EB,#4F46E5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginRight: 2,
+                  boxShadow: '0 0 16px rgba(56,189,248,0.4)',
+                }}>
+                  <ArrowRightIcon size={17} style={{ color: '#fff' }} />
+                </div>
+              </div>
+            </a>
+          </div>
+
+          {/* Stats row */}
+          <div className="hero-anim-5" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            {[
+              { val: '48hr', label: 'Proposal turnaround' },
+              { val: '100%', label: 'Custom builds' },
+              { val: 'End-to-end', label: 'Ownership' },
+            ].map((stat, i) => (
+              <React.Fragment key={stat.val}>
+                {i > 0 && <div className="stat-divider" />}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <span style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 700,
+                    fontSize: 17, color: '#fff', letterSpacing: '-0.02em',
+                  }}>{stat.val}</span>
+                  <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>{stat.label}</span>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div style={{
+        position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 20,
+      }}>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Scroll</span>
+        <div style={{
+          width: 20, height: 32, borderRadius: 100,
+          border: '1px solid rgba(255,255,255,0.15)',
+          display: 'flex', justifyContent: 'center', paddingTop: 6,
+        }}>
+          <div style={{ width: 4, height: 8, borderRadius: 100, background: 'rgba(56,189,248,0.7)', animation: 'heroSlideUp 1.5s ease infinite' }} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Hero });
+
+const LOGOS = [
+  'Northline Capital', 'Meridian Group', 'Apex Ventures',
+  'Solaris Co.', 'Driftwood Labs', 'Crestview Partners',
+  'Ironwood Tech', 'Luminary Inc.', 'Cascade Studio',
+];
+
+function LogoCloud() {
+  const ref = useScrollAnimation();
+  const doubled = [...LOGOS, ...LOGOS];
+
+  return (
+    <section style={{
+      background: 'rgba(0,0,0,0.25)',
+      backdropFilter: 'blur(8px)',
+      borderTop: '1px solid rgba(255,255,255,0.05)',
+      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      padding: '32px 0',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        maxWidth: 1180, margin: '0 auto',
+        padding: '0 32px',
+        display: 'flex', alignItems: 'center', gap: 40,
+      }}>
+        {/* Label — desktop only */}
+        <div className="hide-mobile fade-in" ref={ref} style={{
+          flexShrink: 0, width: 220,
+          borderRight: '1px solid rgba(255,255,255,0.08)',
+          paddingRight: 40,
+        }}>
+          <p style={{
+            fontSize: 12, fontWeight: 500,
+            color: 'rgba(255,255,255,0.38)',
+            textTransform: 'uppercase', letterSpacing: '0.1em',
+            lineHeight: 1.5,
+          }}>
+            Trusted by<br />forward-thinking teams
+          </p>
+        </div>
+
+        {/* Infinite slider */}
+        <div style={{ flex: 1, overflow: 'hidden', maxWidth: '100%', maskImage: 'linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)', WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)' }}>
+          <div className="slider-track">
+            {doubled.map((name, i) => (
+              <div key={i} style={{
+                padding: '0 36px',
+                flexShrink: 0,
+                display: 'flex', alignItems: 'center',
+              }}>
+                <span style={{
+                  fontFamily: 'var(--font-display)', fontWeight: 600,
+                  fontSize: 15, letterSpacing: '-0.01em',
+                  color: 'rgba(255,255,255,0.28)',
+                  whiteSpace: 'nowrap',
+                  filter: 'brightness(1)',
+                  transition: 'color 0.2s',
+                }}>{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { LogoCloud });
+
+const STEP_ICONS = [
+  /* 01 Evaluate — radar search */
+  <svg width="52" height="52" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="26" cy="26" r="16" stroke="#38BDF8" strokeWidth="1.2" opacity="0.2"/>
+    <circle cx="26" cy="26" r="10" stroke="#38BDF8" strokeWidth="1.4" opacity="0.4"/>
+    <circle cx="26" cy="26" r="4.5" fill="rgba(56,189,248,0.35)" stroke="#38BDF8" strokeWidth="1.6"/>
+    <line x1="34" y1="34" x2="47" y2="47" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round"/>
+    <circle cx="19" cy="21" r="1.8" fill="#38BDF8" opacity="0.9"/>
+    <circle cx="31" cy="19" r="1.8" fill="#38BDF8" opacity="0.7"/>
+    <circle cx="23" cy="33" r="1.8" fill="#38BDF8" opacity="0.8"/>
+    <circle cx="33" cy="29" r="1.4" fill="#4F46E5" opacity="0.7"/>
+  </svg>,
+  /* 02 Diagnose — audit report */
+  <svg width="52" height="52" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="6" width="32" height="40" rx="5" stroke="#38BDF8" strokeWidth="1.4" opacity="0.35"/>
+    <line x1="18" y1="17" x2="34" y2="17" stroke="#38BDF8" strokeWidth="1.8" strokeLinecap="round" opacity="0.7"/>
+    <line x1="18" y1="24" x2="34" y2="24" stroke="#38BDF8" strokeWidth="1.8" strokeLinecap="round" opacity="0.5"/>
+    <line x1="18" y1="31" x2="28" y2="31" stroke="#38BDF8" strokeWidth="1.8" strokeLinecap="round" opacity="0.4"/>
+    <circle cx="46" cy="46" r="11" fill="rgba(56,189,248,0.12)" stroke="#38BDF8" strokeWidth="1.6"/>
+    <polyline points="40,46 43.5,49.5 52,41" stroke="#38BDF8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>,
+  /* 03 Build — code editor */
+  <svg width="52" height="52" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="12" width="40" height="30" rx="5" stroke="#38BDF8" strokeWidth="1.4" opacity="0.35"/>
+    <line x1="6" y1="20" x2="46" y2="20" stroke="#38BDF8" strokeWidth="1" opacity="0.25"/>
+    <circle cx="13" cy="16" r="2" fill="rgba(239,68,68,0.6)"/>
+    <circle cx="20" cy="16" r="2" fill="rgba(245,158,11,0.6)"/>
+    <circle cx="27" cy="16" r="2" fill="rgba(56,189,248,0.6)"/>
+    <polyline points="14,28 20,34 14,40" stroke="#38BDF8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    <line x1="25" y1="40" x2="38" y2="40" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round" opacity="0.9"/>
+    <circle cx="50" cy="48" r="8" stroke="#4F46E5" strokeWidth="1.4" opacity="0.6"/>
+    <circle cx="50" cy="48" r="3" fill="rgba(79,70,229,0.5)"/>
+  </svg>,
+  /* 04 Scale — growth chart */
+  <svg width="52" height="52" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="8" y1="50" x2="54" y2="50" stroke="rgba(255,255,255,0.15)" strokeWidth="1.2"/>
+    <line x1="8" y1="50" x2="8" y2="10" stroke="rgba(255,255,255,0.15)" strokeWidth="1.2"/>
+    <rect x="12" y="36" width="8" height="14" rx="2" fill="rgba(56,189,248,0.25)" stroke="#38BDF8" strokeWidth="1.2"/>
+    <rect x="24" y="26" width="8" height="24" rx="2" fill="rgba(56,189,248,0.4)" stroke="#38BDF8" strokeWidth="1.2"/>
+    <rect x="36" y="14" width="8" height="36" rx="2" fill="rgba(56,189,248,0.6)" stroke="#38BDF8" strokeWidth="1.2"/>
+    <polyline points="12,38 24,28 36,16 48,10" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    <polyline points="42,10 48,10 48,16" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>,
+];
+
+const STEPS = [
+  {
+    num: '01',
+    title: 'Evaluate',
+    desc: 'We start with a deep-dive into your operations — mapping workflows, identifying bottlenecks, and pinpointing the highest-leverage automation opportunities. No guesswork, only data.',
+    tag: 'Discovery Call',
+  },
+  {
+    num: '02',
+    title: 'Diagnose',
+    desc: 'We deliver a comprehensive automation audit: a prioritized roadmap of exactly what to build, why it matters, and what ROI to expect. You get clarity before a single line of code is written.',
+    tag: 'Strategy Blueprint',
+  },
+  {
+    num: '03',
+    title: 'Build',
+    desc: 'We build, test, and deploy your custom automations with precision. Every system is purpose-built for your stack, your team, and your workflows — never off-the-shelf.',
+    tag: 'Custom Development',
+  },
+  {
+    num: '04',
+    title: 'Scale',
+    desc: 'We stay with you as your business grows. Ongoing support, iteration, and expansion — your automation stack evolves as fast as your operations demand.',
+    tag: 'Continuous Growth',
+  },
+];
+
+function Process() {
+  const containerRef = useStaggerAnimation(3);
+  const connectorRef = useRef(null);
+
+  useEffect(() => {
+    const el = connectorRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); obs.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section id="process" style={{ padding: '120px 32px' }}>
+      {/* Glow */}
+      <div className="glow-orb" style={{
+        width: 500, height: 400, top: '20%', right: -100,
+        background: 'radial-gradient(circle, rgba(79,70,229,0.1) 0%, transparent 70%)',
+      }} />
+
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        {/* Header */}
+        <div ref={useScrollAnimation()} className="fade-up" style={{ marginBottom: 72, maxWidth: 540 }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>How It Works</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(32px, 4vw, 52px)', letterSpacing: '-0.03em',
+            lineHeight: 1.12, marginBottom: 18,
+          }}>
+            From friction to
+            <span className="gradient-text"> flow — in weeks.</span>
+          </h2>
+          <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, fontFamily: 'var(--font-body)' }}>
+            Our three-phase process is built around outcomes, not deliverables.
+            Every engagement starts with proof, not promises.
+          </p>
+        </div>
+
+        {/* Steps grid */}
+        <div ref={containerRef} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 16, position: 'relative',
+        }}>
+          {STEPS.map((step, i) => (
+            <div key={step.num} data-stagger className="fade-up glass glass-hover" style={{
+              borderRadius: 20, padding: '36px 30px',
+              position: 'relative', overflow: 'hidden',
+              transitionDelay: `${i * 0.08}s`,
+            }}>
+              {/* Number watermark */}
+              <div style={{
+                position: 'absolute', top: -10, right: 16,
+                fontFamily: 'var(--font-display)', fontWeight: 800,
+                fontSize: 80, lineHeight: 1,
+                color: 'rgba(255,255,255,0.03)',
+                pointerEvents: 'none', userSelect: 'none',
+              }}>{step.num}</div>
+
+              {/* Illustration */}
+              <div style={{
+                width: 68, height: 68, borderRadius: 16, marginBottom: 24,
+                background: 'linear-gradient(135deg, rgba(56,189,248,0.08), rgba(79,70,229,0.08))',
+                border: '1px solid rgba(56,189,248,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                {STEP_ICONS[i]}
+              </div>
+
+              {/* Step badge + tag */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: 8,
+                  background: 'linear-gradient(135deg,#38BDF8,#4F46E5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 12,
+                  color: '#fff', flexShrink: 0,
+                  boxShadow: '0 2px 12px rgba(56,189,248,0.35)',
+                }}>{step.num}</div>
+                <span style={{
+                  fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.38)',
+                  fontFamily: 'var(--font-body)',
+                }}>{step.tag}</span>
+              </div>
+
+              <h3 style={{
+                fontFamily: 'var(--font-display)', fontWeight: 700,
+                fontSize: 24, letterSpacing: '-0.02em',
+                marginBottom: 12, color: '#fff',
+              }}>{step.title}</h3>
+
+              <p style={{
+                fontSize: 14.5, color: 'rgba(255,255,255,0.58)',
+                lineHeight: 1.72, fontFamily: 'var(--font-body)',
+              }}>{step.desc}</p>
+
+              {/* Bottom accent line */}
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
+                background: 'linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent)',
+                opacity: 0, transition: 'opacity 0.3s ease',
+              }} className="step-bottom-line" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Process });
+
+function ContactStrip() {
+  return (
+    <div style={{
+      padding: '0 32px',
+      background: 'rgba(0,0,0,0.18)',
+      borderTop: '1px solid rgba(255,255,255,0.05)',
+      borderBottom: '1px solid rgba(255,255,255,0.05)',
+    }}>
+      <div style={{
+        maxWidth: 1180, margin: '0 auto',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: 'clamp(32px, 6vw, 80px)',
+        padding: '28px 0',
+        flexWrap: 'wrap',
+      }}>
+        {/* Phone */}
+        <a href="tel:+14166185954" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 14 }}
+          onMouseEnter={e => e.currentTarget.querySelector('.cstrip-text').style.color = '#38BDF8'}
+          onMouseLeave={e => e.currentTarget.querySelector('.cstrip-text').style.color = 'rgba(255,255,255,0.82)'}
+        >
+          <div style={{
+            width: 42, height: 42, borderRadius: 12, flexShrink: 0,
+            background: 'linear-gradient(135deg, rgba(56,189,248,0.12), rgba(79,70,229,0.12))',
+            border: '1px solid rgba(56,189,248,0.2)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.21 2 2 0 012.04.06h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
+            </svg>
+          </div>
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(56,189,248,0.7)', fontFamily: 'var(--font-body)', marginBottom: 2 }}>Call us</p>
+            <p className="cstrip-text" style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,0.82)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em', transition: 'color 0.2s' }}>(416) 618-5954</p>
+          </div>
+        </a>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 40, background: 'rgba(255,255,255,0.08)', flexShrink: 0 }} className="hide-mobile" />
+
+        {/* Email */}
+        <a href="mailto:edward@valleyscale.ca" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 14 }}
+          onMouseEnter={e => e.currentTarget.querySelector('.cstrip-text').style.color = '#38BDF8'}
+          onMouseLeave={e => e.currentTarget.querySelector('.cstrip-text').style.color = 'rgba(255,255,255,0.82)'}
+        >
+          <div style={{
+            width: 42, height: 42, borderRadius: 12, flexShrink: 0,
+            background: 'linear-gradient(135deg, rgba(56,189,248,0.12), rgba(79,70,229,0.12))',
+            border: '1px solid rgba(56,189,248,0.2)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(56,189,248,0.7)', fontFamily: 'var(--font-body)', marginBottom: 2 }}>Email us</p>
+            <p className="cstrip-text" style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,0.82)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em', transition: 'color 0.2s' }}>edward@valleyscale.ca</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { ContactStrip });
+
+const SERVICES = [
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+      </svg>
+    ),
+    title: 'Sales & Lead Generation',
+    desc: 'Automate your entire pipeline.',
+    bullets: ['Lead scoring & qualification', 'Automated follow-up sequences', 'CRM enrichment & sync', 'Meeting booking workflows'],
+  },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    ),
+    title: 'Client Communication',
+    desc: 'Never miss a message that matters.',
+    bullets: ['Intelligent inbox triage', 'Auto-draft email responses', 'Client onboarding flows', 'Status update automations'],
+  },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/>
+      </svg>
+    ),
+    title: 'Operations & Admin',
+    desc: 'Free your team from repetitive tasks.',
+    bullets: ['Document generation & routing', 'Approval workflow automation', 'Data entry elimination', 'Internal reporting pipelines'],
+  },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    ),
+    title: 'Marketing',
+    desc: 'Ship content and campaigns on autopilot.',
+    bullets: ['Content repurposing pipelines', 'Social scheduling workflows', 'Campaign performance tracking', 'Audience segmentation'],
+  },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+      </svg>
+    ),
+    title: 'Finance & Billing',
+    desc: 'Close your books without the chaos.',
+    bullets: ['Invoice generation & chasing', 'Expense categorization', 'Reconciliation workflows', 'Financial dashboard feeds'],
+  },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+      </svg>
+    ),
+    title: 'Customer Support',
+    desc: 'Scale support without scaling headcount.',
+    bullets: ['AI-powered ticket routing', 'Auto-resolve common queries', 'Escalation logic & alerts', 'CSAT collection workflows'],
+  },
+];
+
+function Services() {
+  const [active, setActive] = useState(null);
+  const containerRef = useStaggerAnimation(6);
+
+  return (
+    <section id="services" style={{ padding: '120px 32px', background: 'rgba(0,0,0,0.18)' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        {/* Header */}
+        <div ref={useScrollAnimation()} className="fade-up" style={{ marginBottom: 64, textAlign: 'center' }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>What We Build</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(30px, 4vw, 50px)', letterSpacing: '-0.03em',
+            lineHeight: 1.12, maxWidth: 680, margin: '0 auto 18px',
+          }}>
+            If it runs in your business,
+            <span className="gradient-text"> we can automate it.</span>
+          </h2>
+          <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', fontFamily: 'var(--font-body)' }}>
+            Six core domains. Infinite combinations. All built to your exact stack.
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div ref={containerRef} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))',
+          gap: 16,
+        }}>
+          {SERVICES.map((svc, i) => {
+            const isActive = active === i;
+            return (
+            <div
+              key={svc.title}
+              data-stagger
+              className="fade-up"
+              style={{
+                borderRadius: 18, padding: '32px 30px',
+                cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                background: isActive ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.04)',
+                border: isActive ? '1px solid rgba(56,189,248,0.35)' : '1px solid rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
+                boxShadow: isActive ? '0 0 28px rgba(56,189,248,0.1)' : 'none',
+                transition: 'border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease',
+                transitionDelay: `${(i % 3) * 0.07}s`,
+              }}
+              onClick={() => setActive(active === i ? null : i)}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+            >
+              {/* Icon */}
+              <div style={{
+                width: 48, height: 48, borderRadius: 12, marginBottom: 18,
+                background: 'linear-gradient(135deg, rgba(56,189,248,0.15), rgba(79,70,229,0.15))',
+                border: '1px solid rgba(56,189,248,0.2)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#38BDF8',
+              }}>
+                {svc.icon}
+              </div>
+
+              <h3 style={{
+                fontFamily: 'var(--font-display)', fontWeight: 700,
+                fontSize: 19, letterSpacing: '-0.02em', marginBottom: 8, color: '#fff',
+              }}>{svc.title}</h3>
+
+              <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,0.5)', marginBottom: 16, fontFamily: 'var(--font-body)' }}>
+                {svc.desc}
+              </p>
+
+              {/* Expandable bullets — React-controlled */}
+              <div style={{
+                overflow: 'hidden',
+                maxHeight: isActive ? 240 : 0,
+                opacity: isActive ? 1 : 0,
+                transition: 'max-height 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.28s ease',
+              }}>
+                <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 14 }} />
+                {svc.bullets.map(b => (
+                  <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9 }}>
+                    <div style={{
+                      width: 18, height: 18, borderRadius: 100, flexShrink: 0,
+                      background: 'linear-gradient(135deg,#38BDF8,#4F46E5)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <CheckIcon size={10} style={{ color: '#fff' }} />
+                    </div>
+                    <span style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.68)', fontFamily: 'var(--font-body)' }}>{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Services });
+
+const CARDS = [
+  {
+    label: 'Pattern 01',
+    title: 'Strategy Without Execution',
+    problem: 'You get a beautiful deck, a 40-page roadmap, and a handshake — then nothing ships.',
+    why: 'Consulting firms sell strategy because it\'s low-risk for them. Execution requires accountability, domain depth, and ongoing commitment they aren\'t structured to provide.',
+    fix: 'Valleyscale is a build shop, not a slide shop. Every engagement ends with live, working systems — not recommendations.',
+  },
+  {
+    label: 'Pattern 02',
+    title: 'Build Without Strategy',
+    problem: 'A developer builds exactly what you asked for. Six months later, it\'s abandoned because it solved the wrong problem.',
+    why: 'Generic development shops take briefs at face value. They have no incentive to challenge your assumptions or tell you your idea is the wrong one to build first.',
+    fix: 'We diagnose before we prescribe. Our audit phase ensures every build targets the highest-ROI lever in your business — not just what sounded good in the kickoff call.',
+  },
+  {
+    label: 'Pattern 03',
+    title: 'Generic Outsourcing',
+    problem: 'You hire an overseas team or a GPT-wrapper agency. You get generic tools that don\'t fit your stack, your team, or your workflows.',
+    why: 'One-size-fits-all automation is still manual work in disguise — you spend more time managing the tool than the tool saves you.',
+    fix: 'Every system we build is custom — designed around your specific processes, integrated with your existing stack, and handed off with full documentation and training.',
+  },
+];
+
+const CARD_ICONS = [
+  /* Strategy without execution — target/slide */
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+  </svg>,
+  /* Build without strategy — code/wrench */
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+  </svg>,
+  /* Generic outsourcing — globe/cog */
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>,
+];
+
+const CARD_COLORS = [
+  { accent: 'rgba(239,68,68,0.9)', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)' },
+  { accent: 'rgba(245,158,11,0.9)', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
+  { accent: 'rgba(168,85,247,0.9)', bg: 'rgba(168,85,247,0.08)', border: 'rgba(168,85,247,0.25)' },
+];
+
+function WhyFail() {
+  const containerRef = useStaggerAnimation(3);
+
+  return (
+    <section id="why" style={{ padding: '120px 32px' }}>
+      <div className="glow-orb" style={{
+        width: 500, height: 400, bottom: '10%', left: -80,
+        background: 'radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)',
+      }} />
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        {/* Header */}
+        <div ref={useScrollAnimation()} className="fade-up" style={{ marginBottom: 72, maxWidth: 600, textAlign: 'center', margin: '0 auto 72px' }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>The Honest Truth</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(30px, 4vw, 50px)', letterSpacing: '-0.03em',
+            lineHeight: 1.12, marginBottom: 18,
+          }}>
+            Why most AI projects
+            <span className="gradient-text"> never ship.</span>
+          </h2>
+          <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, fontFamily: 'var(--font-body)' }}>
+            The AI boom created a flood of consultants, agencies, and tools. Most fail for the same three reasons.
+          </p>
+        </div>
+
+        {/* 3-column cards — always expanded */}
+        <div ref={containerRef} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 20,
+        }}>
+          {CARDS.map((card, i) => {
+            const c = CARD_COLORS[i];
+            return (
+              <div
+                key={card.title}
+                data-stagger
+                className="fade-up glass glass-hover"
+                style={{
+                  borderRadius: 22,
+                  borderTop: `2px solid ${c.border}`,
+                  overflow: 'hidden',
+                  transitionDelay: `${i * 0.1}s`,
+                  display: 'flex', flexDirection: 'column',
+                }}
+              >
+                {/* Card header */}
+                <div style={{ padding: '32px 32px 24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.14em',
+                      color: c.accent, textTransform: 'uppercase',
+                      fontFamily: 'var(--font-body)',
+                    }}>{card.label}</span>
+                    <div style={{
+                      width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                      background: c.bg, border: `1px solid ${c.border}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      color: c.accent,
+                    }}>
+                      {CARD_ICONS[i]}
+                    </div>
+                  </div>
+                  <h3 style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 700,
+                    fontSize: 21, letterSpacing: '-0.02em', color: '#fff', lineHeight: 1.3,
+                  }}>{card.title}</h3>
+                </div>
+
+                {/* Flow sections with connectors */}
+                <div style={{ padding: '0 24px 32px', flex: 1, display: 'flex', flexDirection: 'column', gap: 0 }}>
+                  {[
+                    { label: 'The Problem', text: card.problem, color: 'rgba(239,68,68,0.85)', dot: 'rgba(239,68,68,0.7)' },
+                    { label: 'Why It Fails', text: card.why, color: 'rgba(245,158,11,0.85)', dot: 'rgba(245,158,11,0.7)' },
+                    { label: 'The Valleyscale Fix', text: card.fix, color: 'rgba(56,189,248,0.95)', dot: '#38BDF8', highlight: true },
+                  ].map((section, si) => (
+                    <div key={section.label}>
+                      <div style={{
+                        padding: '16px 18px',
+                        borderRadius: 12,
+                        background: section.highlight ? 'rgba(56,189,248,0.06)' : 'rgba(255,255,255,0.025)',
+                        border: section.highlight ? '1px solid rgba(56,189,248,0.2)' : '1px solid rgba(255,255,255,0.05)',
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                          <div style={{ width: 7, height: 7, borderRadius: '50%', background: section.dot, flexShrink: 0, boxShadow: section.highlight ? '0 0 6px #38BDF8' : 'none' }} />
+                          <span style={{
+                            fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
+                            textTransform: 'uppercase', color: section.color,
+                            fontFamily: 'var(--font-body)',
+                          }}>{section.label}</span>
+                        </div>
+                        <p style={{
+                          fontSize: 13.5, color: section.highlight ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0.58)',
+                          lineHeight: 1.65, fontFamily: 'var(--font-body)', paddingLeft: 15,
+                        }}>{section.text}</p>
+                      </div>
+                      {si < 2 && (
+                        <div style={{ display: 'flex', justifyContent: 'center', padding: '6px 0' }}>
+                          <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
+                            <line x1="6" y1="0" x2="6" y2="10" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5"/>
+                            <polyline points="3,8 6,12 9,8" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { WhyFail });
+
+const TESTIMONIALS = [
+  {
+    quote: "We were drowning in manual follow-ups and lead tracking. Valleyscale mapped our entire sales process, identified the three biggest time-wasters, and built automations that freed up 12 hours a week for my team. ROI was visible within the first month.",
+    name: 'Sarah Thornton',
+    title: 'VP of Revenue',
+    company: 'Meridian Group',
+    stars: 5,
+  },
+  {
+    quote: "What separates Valleyscale from every other agency we've tried is the diagnostic phase. They told us not to build what we asked for — and they were right. The system they recommended instead has become central to how we operate.",
+    name: 'James Okafor',
+    title: 'Co-Founder',
+    company: 'Driftwood Labs',
+    stars: 5,
+  },
+  {
+    quote: "Our client onboarding went from a 3-day manual process to fully automated in under two weeks. The documentation was thorough, the handoff was smooth, and the system has run without issues for six months. Exactly what we needed.",
+    name: 'Priya Nakamura',
+    title: 'Director of Operations',
+    company: 'Apex Ventures',
+    stars: 5,
+  },
+];
+
+const COMPANIES = ['Northline Capital', 'Meridian Group', 'Apex Ventures', 'Solaris Co.', 'Driftwood Labs', 'Ironwood Tech'];
+
+function Testimonials() {
+  const containerRef = useStaggerAnimation(3);
+  const [current, setCurrent] = useState(0);
+  const total = TESTIMONIALS.length;
+
+  const TestimonialCard = ({ t, i, style = {} }) => (
+    <div className="glass glass-hover" style={{
+      borderRadius: 20, padding: '36px 32px',
+      display: 'flex', flexDirection: 'column',
+      ...style,
+    }}>
+      <div style={{ display: 'flex', gap: 3, marginBottom: 22 }}>
+        {Array.from({ length: t.stars }).map((_, j) => (
+          <StarIcon key={j} size={14} style={{ color: '#38BDF8' }} />
+        ))}
+      </div>
+      <p style={{
+        fontSize: 15.5, color: 'rgba(255,255,255,0.75)',
+        lineHeight: 1.75, fontFamily: 'var(--font-body)',
+        flex: 1, marginBottom: 28, fontStyle: 'italic',
+      }}>"{t.quote}"</p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{
+          width: 42, height: 42, borderRadius: 100, flexShrink: 0,
+          background: 'linear-gradient(135deg, rgba(56,189,248,0.25), rgba(79,70,229,0.25))',
+          border: '1px solid rgba(56,189,248,0.2)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, color: '#38BDF8',
+        }}>{t.name[0]}</div>
+        <div>
+          <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 15, color: '#fff', marginBottom: 2 }}>{t.name}</p>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.42)', fontFamily: 'var(--font-body)' }}>{t.title} · {t.company}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <section style={{ padding: '120px 32px', background: 'rgba(0,0,0,0.15)' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        {/* Header */}
+        <div ref={useScrollAnimation()} className="fade-up" style={{ textAlign: 'center', marginBottom: 52 }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>Social Proof</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(30px, 4vw, 50px)', letterSpacing: '-0.03em',
+            lineHeight: 1.12, marginBottom: 18,
+          }}>
+            Built for businesses
+            <span className="gradient-text"> like yours.</span>
+          </h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginTop: 24 }}>
+            {COMPANIES.map(c => (
+              <span key={c} style={{
+                padding: '6px 14px', borderRadius: 100,
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                fontSize: 13, color: 'rgba(255,255,255,0.45)',
+                fontFamily: 'var(--font-body)',
+              }}>{c}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: grid */}
+        <div className="hide-mobile" ref={containerRef} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 20,
+        }}>
+          {TESTIMONIALS.map((t, i) => (
+            <div key={t.name} data-stagger className="fade-up" style={{ transitionDelay: `${i * 0.1}s` }}>
+              <TestimonialCard t={t} i={i} />
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile: carousel */}
+        <div className="hide-desktop">
+          <TestimonialCard t={TESTIMONIALS[current]} i={current} />
+
+          {/* Navigation */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            gap: 20, marginTop: 24,
+          }}>
+            <button
+              onClick={() => setCurrent((current - 1 + total) % total)}
+              style={{
+                width: 44, height: 44, borderRadius: 100, border: 'none', cursor: 'pointer',
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(56,189,248,0.2)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.07)'}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+
+            {/* Dots */}
+            <div style={{ display: 'flex', gap: 8 }}>
+              {TESTIMONIALS.map((_, i) => (
+                <div key={i} onClick={() => setCurrent(i)} style={{
+                  width: i === current ? 24 : 8, height: 8, borderRadius: 100, cursor: 'pointer',
+                  background: i === current ? 'linear-gradient(90deg,#38BDF8,#4F46E5)' : 'rgba(255,255,255,0.2)',
+                  transition: 'width 0.3s ease, background 0.3s ease',
+                }} />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setCurrent((current + 1) % total)}
+              style={{
+                width: 44, height: 44, borderRadius: 100, cursor: 'pointer',
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(56,189,248,0.2)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.07)'}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Counter */}
+          <p style={{
+            textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.3)',
+            marginTop: 12, fontFamily: 'var(--font-body)',
+          }}>{current + 1} / {total}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Testimonials });
+
+function Team() {
+  const ref = useScrollAnimation();
+
+  return (
+    <section style={{ padding: '120px 32px' }}>
+      <div className="glow-orb" style={{
+        width: 500, height: 400, top: '10%', right: -80,
+        background: 'radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%)',
+      }} />
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <div ref={useScrollAnimation()} className="fade-up" style={{ marginBottom: 64, maxWidth: 500 }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>The Team</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(30px, 4vw, 50px)', letterSpacing: '-0.03em', lineHeight: 1.12,
+          }}>
+            Who's behind
+            <span className="gradient-text"> Valleyscale.</span>
+          </h2>
+        </div>
+
+        <div ref={ref} className="fade-up glass" style={{
+          borderRadius: 24, padding: 'clamp(32px, 5vw, 56px)',
+          display: 'flex', gap: 48, alignItems: 'flex-start',
+          flexWrap: 'wrap',
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.07)',
+        }}>
+          {/* Avatar */}
+          <div style={{ flexShrink: 0 }}>
+            <div className="avatar-placeholder" style={{
+              width: 120, height: 120, borderRadius: 20,
+              marginBottom: 16,
+            }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(56,189,248,0.5)" strokeWidth="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '8px 16px', borderRadius: 100,
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'rgba(255,255,255,0.65)', textDecoration: 'none',
+              fontSize: 13, fontFamily: 'var(--font-body)',
+              transition: 'background 0.2s, color 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(56,189,248,0.12)'; e.currentTarget.style.color = '#38BDF8'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; }}
+            >
+              <LinkedInIcon size={15} />
+              LinkedIn
+            </a>
+          </div>
+
+          {/* Bio */}
+          <div style={{ flex: 1, minWidth: 240 }}>
+            <h3 style={{
+              fontFamily: 'var(--font-display)', fontWeight: 700,
+              fontSize: 28, letterSpacing: '-0.025em', color: '#fff', marginBottom: 4,
+            }}>Edward Azizi</h3>
+            <p style={{
+              fontSize: 14, color: 'rgba(56,189,248,0.8)', marginBottom: 22,
+              fontFamily: 'var(--font-body)', fontWeight: 500,
+            }}>Founder & Head of Automation</p>
+            <p style={{
+              fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.8,
+              fontFamily: 'var(--font-body)', marginBottom: 24, maxWidth: 560,
+            }}>
+              I've spent the last six years building automation systems at the intersection of AI and real business operations — first inside SaaS companies, then as a consultant for mid-market businesses across North America. I started Valleyscale because I kept seeing the same pattern: smart teams buried in repetitive work, with no clear path to automation that actually stuck.
+            </p>
+            <p style={{
+              fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.8,
+              fontFamily: 'var(--font-body)', maxWidth: 560,
+            }}>
+              My approach is always diagnosis first, build second. I don't believe in selling automation for its own sake — only when it creates measurable, durable value for the people using it every day.
+            </p>
+
+            {/* Credential pills */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 28 }}>
+              {['6+ yrs AI systems', 'Make · n8n · Zapier', 'OpenAI · Anthropic', '50+ automations shipped'].map(tag => (
+                <span key={tag} style={{
+                  padding: '6px 14px', borderRadius: 100,
+                  background: 'rgba(56,189,248,0.08)',
+                  border: '1px solid rgba(56,189,248,0.2)',
+                  fontSize: 13, color: 'rgba(56,189,248,0.85)',
+                  fontFamily: 'var(--font-body)',
+                }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Team });
+
+const FAQS = [
+  {
+    q: 'Do I need to know anything about AI to work with you?',
+    a: 'Not at all. You know your business — we know automation. Our process is designed so you can stay focused on outcomes while we handle all the technical complexity. We translate business problems into automation solutions, not the other way around.',
+  },
+  {
+    q: 'How long does a typical engagement take?',
+    a: 'Most initial builds take 2–6 weeks from kickoff to deployment, depending on complexity. The diagnostic phase takes 3–5 business days and results in a full automation roadmap. Simple single-workflow automations can ship in under a week.',
+  },
+  {
+    q: 'What industries do you work with?',
+    a: 'We work across industries — professional services, e-commerce, SaaS, real estate, finance, healthcare admin, and more. If your business runs on recurring processes and data, we can almost certainly automate the most painful parts of it.',
+  },
+  {
+    q: 'How is this different from hiring a developer?',
+    a: 'A developer builds what you spec. We tell you what to spec — and often, what not to build. We also specialize in automation tooling (Make, n8n, custom AI pipelines) rather than traditional software development, which means faster builds, lower cost, and less ongoing maintenance.',
+  },
+  {
+    q: 'What if we already have AI tools in place?',
+    a: 'Great — we work with what you have. We\'ll audit your existing stack, identify what\'s underused or misaligned, and either optimize your current setup or layer in targeted additions. We never recommend replacing tools for the sake of it.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'Engagements start with a free diagnostic call. From there, project-based builds typically range from $2,500 to $25,000+ depending on scope and complexity. We also offer ongoing retainers for teams that want continuous automation support and iteration.',
+  },
+];
+
+function FAQ() {
+  const [flipped, setFlipped] = useState({});
+  const containerRef = useStaggerAnimation(6);
+
+  return (
+    <section id="faq" style={{ padding: '120px 32px', background: 'rgba(0,0,0,0.15)' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <div ref={useScrollAnimation()} className="fade-up" style={{ textAlign: 'center', marginBottom: 64 }}>
+          <p style={{
+            fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+            marginBottom: 14, fontFamily: 'var(--font-body)',
+          }}>FAQ</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 'clamp(30px, 4vw, 50px)', letterSpacing: '-0.03em', lineHeight: 1.12,
+          }}>
+            Common questions,
+            <span className="gradient-text"> straight answers.</span>
+          </h2>
+          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.4)', marginTop: 14, fontFamily: 'var(--font-body)' }}>
+            Click any card to reveal the answer.
+          </p>
+        </div>
+
+        <div ref={containerRef} className="faq-flip-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 16,
+        }}>
+          {FAQS.map((faq, i) => (
+            <div key={i} data-stagger className="fade-up" style={{ transitionDelay: `${(i % 3) * 0.08}s` }}>
+            <div
+              className={`flip-card${flipped[i] ? ' flipped' : ''}`}
+              style={{ height: 270 }}
+              onClick={() => setFlipped(f => ({ ...f, [i]: !f[i] }))}
+            >
+              <div className="flip-card-inner">
+                {/* Front — question */}
+                <div className="flip-card-front glass" style={{
+                  border: '1px solid rgba(255,255,255,0.09)',
+                  justifyContent: 'space-between',
+                }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8, marginBottom: 16,
+                    background: 'linear-gradient(135deg, rgba(56,189,248,0.15), rgba(79,70,229,0.15))',
+                    border: '1px solid rgba(56,189,248,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#38BDF8', fontSize: 13, fontWeight: 700,
+                    fontFamily: 'var(--font-display)',
+                  }}>Q</div>
+                  <p style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 600,
+                    fontSize: 16, color: '#fff', letterSpacing: '-0.01em',
+                    lineHeight: 1.42, flex: 1,
+                  }}>{faq.q}</p>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6, marginTop: 16,
+                    color: 'rgba(56,189,248,0.6)', fontSize: 11,
+                    fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.06em',
+                  }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 2H3v16h5l3 3 3-3h7V2z"/>
+                    </svg>
+                    TAP FOR ANSWER
+                  </div>
+                </div>
+
+                {/* Back — answer */}
+                <div className="flip-card-back" style={{
+                  background: 'linear-gradient(135deg, rgba(37,99,235,0.22), rgba(79,70,229,0.22))',
+                  border: '1px solid rgba(56,189,248,0.28)',
+                  justifyContent: 'space-between',
+                }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8, marginBottom: 14,
+                    background: 'rgba(56,189,248,0.18)',
+                    border: '1px solid rgba(56,189,248,0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#38BDF8', fontSize: 13, fontWeight: 700,
+                    fontFamily: 'var(--font-display)',
+                  }}>A</div>
+                  <p style={{
+                    fontSize: 13.5, color: 'rgba(255,255,255,0.88)',
+                    lineHeight: 1.68, fontFamily: 'var(--font-body)', flex: 1,
+                  }}>{faq.a}</p>
+                  <div style={{
+                    fontSize: 10, color: 'rgba(56,189,248,0.5)', marginTop: 12,
+                    fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}>Tap to flip back</div>
+                </div>
+              </div>
+            </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { FAQ });
+
+function CalendlyEmbed() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const init = () => {
+      if (window.Calendly && ref.current && !ref.current.dataset.initialized) {
+        ref.current.dataset.initialized = 'true';
+        window.Calendly.initInlineWidget({
+          url: 'https://calendly.com/edward-valleyscale/30min?background_color=0d0f14&text_color=ffffff&primary_color=38BDF8&hide_gdpr_banner=1',
+          parentElement: ref.current,
+        });
+      }
+    };
+    init();
+    window.addEventListener('load', init);
+    const t = setTimeout(init, 2500);
+    return () => { clearTimeout(t); window.removeEventListener('load', init); };
+  }, []);
+  return (
+    <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.09)', background: 'rgba(13,15,20,0.95)' }}>
+      <div ref={ref} style={{ minWidth: 320, height: 700 }} />
+    </div>
+  );
+}
+
+function Booking() {
+  return (
+    <section id="booking" style={{ padding: '120px 32px', position: 'relative' }}>
+      <div className="glow-orb" style={{
+        width: 700, height: 500, top: '10%', left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'radial-gradient(circle, rgba(37,99,235,0.14) 0%, transparent 65%)',
+      }} />
+
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 60, alignItems: 'center',
+        }} className="booking-grid">
+          {/* Left: copy */}
+          <div ref={useScrollAnimation()} className="fade-up">
+            <p style={{
+              fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+              marginBottom: 14, fontFamily: 'var(--font-body)',
+            }}>Book a Call</p>
+            <h2 style={{
+              fontFamily: 'var(--font-display)', fontWeight: 700,
+              fontSize: 'clamp(32px, 4vw, 52px)', letterSpacing: '-0.03em',
+              lineHeight: 1.1, marginBottom: 20,
+            }}>
+              Let's map your
+              <span className="gradient-text"> business.</span>
+            </h2>
+            <p style={{
+              fontSize: 17, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75,
+              fontFamily: 'var(--font-body)', marginBottom: 36, maxWidth: 420,
+            }}>
+              A 30-minute discovery call is all we need to identify your top automation
+              opportunities and give you a clear path forward — at no cost.
+            </p>
+
+            {[
+              'No obligation. Cancel anytime.',
+              'We come prepared — no generic demos.',
+              "You'll leave with at least one actionable insight.",
+            ].map((text, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+                <div style={{
+                  width: 26, height: 26, borderRadius: 100, flexShrink: 0,
+                  background: 'linear-gradient(135deg,#38BDF8,#4F46E5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 2px 10px rgba(56,189,248,0.3)',
+                }}>
+                  <CheckIcon size={12} style={{ color: '#fff' }} />
+                </div>
+                <span style={{ fontSize: 15.5, color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-body)' }}>
+                  {text}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Right: Calendly inline embed */}
+          <div ref={useScrollAnimation(0.1)} className="fade-up">
+            <CalendlyEmbed />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Booking });
+
+function Footer() {
+  return (
+    <footer style={{
+      borderTop: '1px solid rgba(255,255,255,0.06)',
+      padding: '44px 32px',
+      background: 'rgba(0,0,0,0.3)',
+    }}>
+      <div className="footer-inner" style={{
+        maxWidth: 1180, margin: '0 auto',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        flexWrap: 'wrap', gap: 24,
+      }}>
+        {/* Logo */}
+        <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img
+            src="https://res.cloudinary.com/dtxheqf6t/image/upload/v1777246325/ChatGPT_Image_Apr_26_2026_06_09_06_PM_sxndzg.png"
+            alt="Valleyscale logo"
+            style={{ width: 42, height: 42, objectFit: 'contain' }}
+          />
+          <span style={{
+            fontFamily: 'var(--font-display)', fontWeight: 700,
+            fontSize: 17, letterSpacing: '-0.02em', color: '#fff',
+          }}>Valleyscale</span>
+        </a>
+
+        {/* Nav links */}
+        <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Process', href: '#process' },
+            { label: 'Services', href: '#services' },
+            { label: 'Why Us', href: '#why' },
+            { label: 'FAQ', href: '#faq' },
+            { label: 'Contact', href: 'Contact.html' },
+            { label: 'Book a Call', href: '#booking' },
+          ].map(l => (
+            <a key={l.href} href={l.href} className="nav-link" style={{ fontSize: 14 }}>{l.label}</a>
+          ))}
+        </div>
+
+        {/* Icons + copyright */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{
+            color: 'rgba(255,255,255,0.4)', transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = '#38BDF8'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+          >
+            <LinkedInIcon size={17} />
+          </a>
+          <a href="mailto:hello@valleyscale.ca" style={{
+            color: 'rgba(255,255,255,0.4)', transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = '#38BDF8'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+          >
+            <MailIcon size={17} />
+          </a>
+          <span style={{
+            fontSize: 13, color: 'rgba(255,255,255,0.28)',
+            fontFamily: 'var(--font-body)',
+          }}>© 2026 Valleyscale</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+Object.assign(window, { Footer });
+
+function App() {
+  return (
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+      <Nav />
+      <Hero />
+      <LogoCloud />
+      <Process />
+      <ContactStrip />
+      <Services />
+      <WhyFail />
+      <Testimonials />
+      <FAQ />
+      <Booking />
+      <Footer />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+  </script>
+</body>
+</html>

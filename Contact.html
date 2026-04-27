@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Valleyscale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #010101;
+      --gradient: linear-gradient(135deg, #38BDF8 0%, #2563EB 50%, #4F46E5 100%);
+      --gradient-text: linear-gradient(135deg, #ffffff 0%, #38BDF8 55%, #4F46E5 100%);
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
+
+    .gradient-text {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      resize: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255,255,255,0.28);
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(56,189,248,0.45);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.08);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+      font-family: var(--font-body);
+      letter-spacing: 0.01em;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function ContactPage() {
+      const [form, setForm] = useState({
+        firstName: '', lastName: '', email: '',
+        phone: '', business: '', message: '',
+      });
+      const [submitted, setSubmitted] = useState(false);
+      const [submitting, setSubmitting] = useState(false);
+      const [errors, setErrors] = useState({});
+
+      const set = (key, val) => {
+        setForm(f => ({ ...f, [key]: val }));
+        setErrors(e => ({ ...e, [key]: '' }));
+      };
+
+      const validate = () => {
+        const e = {};
+        if (!form.firstName.trim()) e.firstName = 'Required';
+        if (!form.lastName.trim()) e.lastName = 'Required';
+        if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email required';
+        if (!form.business.trim()) e.business = 'Required';
+        if (!form.message.trim()) e.message = 'Required';
+        return e;
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        const errs = validate();
+        if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+        setSubmitting(true);
+        try {
+          const res = await fetch('https://formspree.io/f/xeevwawo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              firstName: form.firstName,
+              lastName: form.lastName,
+              email: form.email,
+              phone: form.phone,
+              business: form.business,
+              message: form.message,
+            }),
+          });
+          if (res.ok) {
+            setSubmitted(true);
+          } else {
+            alert('Something went wrong. Please email edward@valleyscale.ca directly.');
+          }
+        } catch {
+          alert('Something went wrong. Please email edward@valleyscale.ca directly.');
+        }
+        setSubmitting(false);
+      };
+
+      return (
+        <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+          {/* Glow orbs */}
+          <div className="glow-orb" style={{
+            width: 600, height: 500, top: -100, left: -100,
+            background: 'radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 70%)',
+          }} />
+          <div className="glow-orb" style={{
+            width: 500, height: 400, bottom: 0, right: -80,
+            background: 'radial-gradient(circle, rgba(79,70,229,0.12) 0%, transparent 70%)',
+          }} />
+
+          {/* Nav */}
+          <nav style={{
+            position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+            padding: '0 32px',
+            background: 'rgba(1,1,1,0.85)',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            backdropFilter: 'blur(18px)', WebkitBackdropFilter: 'blur(18px)',
+          }}>
+            <div style={{
+              maxWidth: 1180, margin: '0 auto', height: 68,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <a href="index.html" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <img
+                  src="uploads/ChatGPT Image Apr 26, 2026, 06_09_06 PM.png"
+                  alt="Valleyscale logo"
+                  style={{ width: 50, height: 50, objectFit: 'contain' }}
+                />
+                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, letterSpacing: '-0.02em', color: '#fff' }}>
+                  Valleyscale
+                </span>
+              </a>
+              <a href="index.html" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                color: 'rgba(255,255,255,0.55)', textDecoration: 'none',
+                fontSize: 14, fontFamily: 'var(--font-body)',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to site
+              </a>
+            </div>
+          </nav>
+
+          {/* Page content */}
+          <div style={{
+            maxWidth: 760, margin: '0 auto',
+            padding: '140px 32px 100px',
+            position: 'relative', zIndex: 2,
+          }}>
+            {!submitted ? (
+              <>
+                {/* Header */}
+                <div style={{ marginBottom: 52 }}>
+                  <p style={{
+                    fontSize: 12, fontWeight: 600, letterSpacing: '0.14em',
+                    textTransform: 'uppercase', color: 'rgba(56,189,248,0.8)',
+                    marginBottom: 14, fontFamily: 'var(--font-body)',
+                  }}>Get in Touch</p>
+                  <h1 style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 700,
+                    fontSize: 'clamp(36px, 5vw, 58px)', letterSpacing: '-0.03em',
+                    lineHeight: 1.1, marginBottom: 18,
+                  }}>
+                    Tell us about
+                    <span className="gradient-text"> your business.</span>
+                  </h1>
+                  <p style={{
+                    fontSize: 17, color: 'rgba(255,255,255,0.55)',
+                    lineHeight: 1.75, fontFamily: 'var(--font-body)', maxWidth: 520,
+                  }}>
+                    Fill out the form below and we'll get back to you within one business day.
+                    No sales pitch — just a real conversation about what we can build together.
+                  </p>
+                </div>
+
+                {/* Form card */}
+                <div style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+                  borderRadius: 24, padding: 'clamp(28px, 5vw, 48px)',
+                }}>
+                  <form onSubmit={handleSubmit} noValidate>
+                    {/* Name row */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                      <div>
+                        <label>First Name</label>
+                        <input
+                          type="text" placeholder="Edward"
+                          value={form.firstName}
+                          onChange={e => set('firstName', e.target.value)}
+                          style={{ borderColor: errors.firstName ? 'rgba(239,68,68,0.5)' : undefined }}
+                        />
+                        {errors.firstName && <p style={{ color: 'rgba(239,68,68,0.8)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-body)' }}>{errors.firstName}</p>}
+                      </div>
+                      <div>
+                        <label>Last Name</label>
+                        <input
+                          type="text" placeholder="Azizi"
+                          value={form.lastName}
+                          onChange={e => set('lastName', e.target.value)}
+                          style={{ borderColor: errors.lastName ? 'rgba(239,68,68,0.5)' : undefined }}
+                        />
+                        {errors.lastName && <p style={{ color: 'rgba(239,68,68,0.8)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-body)' }}>{errors.lastName}</p>}
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div className="field">
+                      <label>Email Address</label>
+                      <input
+                        type="email" placeholder="you@company.com"
+                        value={form.email}
+                        onChange={e => set('email', e.target.value)}
+                        style={{ borderColor: errors.email ? 'rgba(239,68,68,0.5)' : undefined }}
+                      />
+                      {errors.email && <p style={{ color: 'rgba(239,68,68,0.8)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-body)' }}>{errors.email}</p>}
+                    </div>
+
+                    {/* Phone */}
+                    <div className="field">
+                      <label>Phone Number <span style={{ color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>(optional)</span></label>
+                      <input
+                        type="tel" placeholder="+1 (416) 000-0000"
+                        value={form.phone}
+                        onChange={e => set('phone', e.target.value)}
+                      />
+                    </div>
+
+                    {/* Business */}
+                    <div className="field">
+                      <label>Business Name</label>
+                      <input
+                        type="text" placeholder="Acme Corp"
+                        value={form.business}
+                        onChange={e => set('business', e.target.value)}
+                        style={{ borderColor: errors.business ? 'rgba(239,68,68,0.5)' : undefined }}
+                      />
+                      {errors.business && <p style={{ color: 'rgba(239,68,68,0.8)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-body)' }}>{errors.business}</p>}
+                    </div>
+
+                    {/* Message */}
+                    <div className="field">
+                      <label>How can we help you?</label>
+                      <textarea
+                        rows={5}
+                        placeholder="Describe the processes or workflows you'd like to automate, or any specific challenges you're facing..."
+                        value={form.message}
+                        onChange={e => set('message', e.target.value)}
+                        style={{ borderColor: errors.message ? 'rgba(239,68,68,0.5)' : undefined }}
+                      />
+                      {errors.message && <p style={{ color: 'rgba(239,68,68,0.8)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-body)' }}>{errors.message}</p>}
+                    </div>
+
+                    {/* Submit */}
+                    <button type="submit" disabled={submitting} style={{
+                      width: '100%', padding: '16px', borderRadius: 12,
+                      background: 'linear-gradient(135deg,#38BDF8,#2563EB,#4F46E5)',
+                      border: 'none', color: '#fff',
+                      fontFamily: 'var(--font-display)', fontWeight: 700,
+                      fontSize: 16, cursor: submitting ? 'not-allowed' : 'pointer',
+                      letterSpacing: '-0.01em',
+                      boxShadow: '0 4px 28px rgba(56,189,248,0.25)',
+                      transition: 'opacity 0.2s ease, transform 0.2s ease',
+                      opacity: submitting ? 0.7 : 1,
+                    }}
+                    onMouseEnter={e => { if (!submitting) { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}}
+                    onMouseLeave={e => { e.currentTarget.style.opacity = submitting ? '0.7' : '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                    >
+                      {submitting ? 'Sending…' : 'Send Message →'}
+                    </button>
+
+                    <p style={{
+                      textAlign: 'center', fontSize: 13,
+                      color: 'rgba(255,255,255,0.28)', marginTop: 16,
+                      fontFamily: 'var(--font-body)',
+                    }}>
+                      We respond within 1 business day. No spam, ever.
+                    </p>
+                  </form>
+                </div>
+              </>
+            ) : (
+              /* Success state */
+              <div style={{
+                minHeight: '60vh', display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+              }}>
+                <div style={{
+                  width: 72, height: 72, borderRadius: 100, marginBottom: 28,
+                  background: 'linear-gradient(135deg,#38BDF8,#4F46E5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 0 40px rgba(56,189,248,0.3)',
+                }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <h2 style={{
+                  fontFamily: 'var(--font-display)', fontWeight: 700,
+                  fontSize: 'clamp(28px, 4vw, 42px)', letterSpacing: '-0.03em',
+                  marginBottom: 16,
+                }}>
+                  Message <span className="gradient-text">received.</span>
+                </h2>
+                <p style={{
+                  fontSize: 17, color: 'rgba(255,255,255,0.55)',
+                  lineHeight: 1.75, maxWidth: 420, marginBottom: 36,
+                  fontFamily: 'var(--font-body)',
+                }}>
+                  Thanks for reaching out, {form.firstName}. We'll review your message
+                  and get back to you within one business day.
+                </p>
+                <a href="index.html" style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10,
+                  padding: '12px 28px', borderRadius: 100,
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  color: '#fff', textDecoration: 'none',
+                  fontSize: 15, fontFamily: 'var(--font-body)', fontWeight: 500,
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                >
+                  ← Back to home
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ContactPage />);
+  </script>
+</body>
+</html>
